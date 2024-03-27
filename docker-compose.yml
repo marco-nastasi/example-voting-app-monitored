@@ -88,6 +88,18 @@ services:
     depends_on:
       - cadvisor
   
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+      - "9093:9093"
+    restart: unless-stopped
+    volumes:
+      - "./alertmanager:/config"
+      - alertmanager-data:/data
+    command: --config.file=/config/alertmanager.yml --log.level=debug
+    depends_on:
+      - prometheus
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     ports:
