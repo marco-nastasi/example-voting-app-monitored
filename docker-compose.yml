@@ -101,6 +101,8 @@ services:
       - --config.file=/config/alertmanager.yml
       - --log.level=debug
       - --web.external-url=http://127.0.0.1:9093/alertmanager/
+    networks:
+      - back-tier
     depends_on:
       - prometheus
 
