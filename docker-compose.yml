@@ -139,6 +139,16 @@ services:
     depends_on:
       - prometheus
 
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - front-tier
+
   # this service runs once to seed the database with votes
   # it won't run unless you specify the "seed" profile
   # docker compose --profile seed up -d
