@@ -109,7 +109,7 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     ports:
-      - "8070:8080"
+      - "5000:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
