@@ -1,13 +1,9 @@
+global:
+  resolve_timeout: 5m
 route:
-  receiver: 'mail'
-  repeat_interval: 4h
-  group_by: [ alertname ]
-
+  receiver: webhook_receiver
 receivers:
-  - name: 'mail'
-    email_configs:
-      - smarthost: 'smtp.gmail.com:465'
-        auth_username: 'testalertmanager280@gmail.com'
-        auth_password: ""
-        from: 'testalertmanager280@gmail.com'
-        to: 'testalertmanager280@gmail.com'
+    - name: webhook_receiver
+      webhook_configs:
+        - url: "http://prom2teams:8089/v2/Connector"
+          send_resolved: true

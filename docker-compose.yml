@@ -84,6 +84,7 @@ services:
       - --web.external-url=http://127.0.0.1:9090/prometheus/
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml:ro
     networks:
       - back-tier
     depends_on:
@@ -95,8 +96,9 @@ services:
       - "9093:9093"
     restart: unless-stopped
     volumes:
-      - "./alertmanager:/config"
+      - ./alertmanager/alertmanager.yml:/config/alertmanager.yml:ro"
       - alertmanager-data:/data
+      - ./alertmanager/msteams.tmpl:/etc/alertmanager/templates/msteams.tmpl:ro
     command: 
       - --config.file=/config/alertmanager.yml
       - --log.level=debug
@@ -139,6 +141,17 @@ services:
       - back-tier
     depends_on:
       - prometheus
+
+  prom2teams:
+    image: idealista/prom2teams:4.2.1
+    ports:
+      - "8089:8089"
+    environment:
+      - PROM2TEAMS_CONNECTOR=
+    networks:
+      - back-tier
+    depends_on:
+      - alertmanager
 
   # this service runs once to seed the database with votes
   # it won't run unless you specify the "seed" profile
